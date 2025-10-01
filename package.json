@@ -1,0 +1,26 @@
+{
+  "name": "kalchrono",
+  "version": "1.0.0",
+  "description": "Attendance Management and Tracking Application",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Manasvith/KalChrono.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Manasvith/KalChrono/issues"
+  },
+  "homepage": "https://github.com/Manasvith/KalChrono#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "supabase": "^2.47.2"
+  }
+}

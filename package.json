@@ -2,6 +2,7 @@
   "name": "kalchrono",
   "version": "1.0.0",
   "description": "Attendance Management and Tracking Application",
+<<<<<<< HEAD
   "main": "server.js",
   "dependencies": {
     "@supabase/supabase-js": "^2.58.0",
@@ -110,6 +111,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node backend/server.js"
+=======
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+>>>>>>> 1a7344a0215558ecd30261ab6732ebbd52bd0dba
   },
   "repository": {
     "type": "git",
@@ -121,5 +128,14 @@
     "url": "https://github.com/Manasvith/KalChrono/issues"
   },
   "homepage": "https://github.com/Manasvith/KalChrono#readme",
+<<<<<<< HEAD
   "type": "module"
+=======
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "supabase": "^2.47.2"
+  }
+>>>>>>> 1a7344a0215558ecd30261ab6732ebbd52bd0dba
 }

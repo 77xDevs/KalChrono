@@ -1,8 +1,8 @@
 import express from 'express';
 import cors from 'cors';
-import bodyParser from 'body-parser';
 
 import supabase from "./supabase-client.js";
+import authRoute from "./routes/authRoute.js";
 
 const app = express();
 app.use(cors())
@@ -13,6 +13,8 @@ app.get("/", async (req, res) => {
     if(error) return res.status(400).json({ error: "Error in retrieving"})
     res.send(data);
 })
+
+app.use('/auth', authRoute);
 
 const PORT = process.env.PORT || 5000
 app.listen(PORT, () => {

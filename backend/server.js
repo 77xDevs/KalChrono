@@ -1,8 +1,7 @@
 import express from 'express';
 import cors from 'cors';
-import supabase from "./supabase-client.js";
+import supabase from './supabase-client.js';
 import { authRouter } from './routes/authRoutes.js';
-
 
 const app = express();
 const PORT = process.env.PORT || 5050;
@@ -17,12 +16,6 @@ app.use(cors({
 }));
 
 app.use('/auth', authRouter);
-
-// app.get("/", async (req, res) => {
-//     const { data, error } = await supabase.from("department").select("*");
-//     if(error) return res.status(400).json({ error: "Error in retrieving"})
-//     res.send(data);
-// })
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);

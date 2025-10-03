@@ -1,5 +1,19 @@
 import supabase  from "../../supabase-client.js";
-import { BAD_REQUEST, PASSWORD_MISMATCH } from "../../errorMessages.js";
+import { BAD_REQUEST, PASSWORD_MISMATCH, STUDENT_NOT_FOUND } from "../../errorMessages.js";
+
+//Function to check if the student exists.
+async function studentCheck(rollNo) {
+    const {data, error} = await supabase.from("students").select("*").eq("student_id", rollNo);
+
+    console.log(data.length)
+
+    if(!data || data.length === 0) {
+        console.log("Inside if")
+        return false;
+    }
+
+    return true;
+}
 
 export const studentRegistrationController = {
     studentRegistration : async (request, response) => {
@@ -18,6 +32,15 @@ export const studentRegistrationController = {
                 });
             }
 
+            //Student Check
+            const studentExists = await studentCheck(rollNo);
+            if (!studentExists) {
+                return response.status(405).json({
+                "success": false,
+                "message": STUDENT_NOT_FOUND
+                });
+            }
+
             //Password Check
             if(password !== confirm_password) {
                 return response.status(401).json({
@@ -32,7 +55,6 @@ export const studentRegistrationController = {
                 "password": password
             });
 
-
             //Supabase API error
             if(error) {
                 return response.status(400).json({
@@ -40,7 +62,6 @@ export const studentRegistrationController = {
                     "message": error
                 });
             }
-
 
             //Successful Request
             return response.status(200).json({

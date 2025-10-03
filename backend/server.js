@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import supabase from "./supabase-client.js";
+import supabase from './supabase-client.js';
 import { authRouter } from './routes/authRoutes.js';
 
 const app = express();
@@ -16,6 +16,7 @@ app.use(cors({
 }));
 
 
+<<<<<<< HEAD
 app.get("/", (req, res) => {
     res.json({ message: "Attendance backend is running" });
 });
@@ -23,6 +24,8 @@ app.get("/", (req, res) => {
 
 app.use('/auth', authRouter);
 
+=======
+>>>>>>> main
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });

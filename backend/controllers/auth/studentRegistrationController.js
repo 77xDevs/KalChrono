@@ -1,40 +1,58 @@
 import supabase  from "../../supabase-client.js";
 import { BAD_REQUEST, PASSWORD_MISMATCH, STUDENT_NOT_FOUND } from "../../errorMessages.js";
 
-//Function to check if the student exists.
-async function studentCheck(rollNo) {
-    const {data, error} = await supabase.from("students").select("*").eq("student_id", rollNo);
-
-    console.log(data.length)
-
-    if(!data || data.length === 0) {
-        console.log("Inside if")
+//Checking if the roll number is of correct format
+function rollNumberValidation(rollNo) {
+    if(!Number.isInteger(rollNo) || String(rollNo).length != 12) {
         return false;
     }
 
     return true;
 }
 
+//Function to check if the student exists.
+async function checkIfStudentExistsWithRollNo(rollNo) {
+    const {data, error} = await supabase.from("students").select("*").eq("student_id", rollNo);
+
+    if(!data || data.length === 0) {
+        return false;
+    }
+
+    return true;
+}
+
+//Function to check if password and retype password are same or not
+function checkPasswordAndConfirmPassword(password, confirm_password) {
+    if(password !== confirm_password) {
+        return false;
+    }
+
+    return true;
+}
+
+//Main controller code(Driver code)
 export const studentRegistrationController = {
     studentRegistration : async (request, response) => {
         try {
+            
             //Variables
             let rollNo = request.body.rollNo;
             let email = request.body.email;
             let password = request.body.password;
             let confirm_password = request.body.confirmPassword;
 
-            //Request body Validation: Checking if the roll Number entered is an Integer and is of correct length i.e. 12
-            if(!Number.isInteger(request.body.rollNo) || String(request.body.rollNo).length != 12) {
-                return response.status(401).json({
+            //Valid roll number check
+            const validRollNo = rollNumberValidation(rollNo);
+            if(!validRollNo) {
+                return response.status(422).json({
                     "success": "false",
                     "message": BAD_REQUEST
                 });
             }
 
             //Student Check
-            const studentExists = await studentCheck(rollNo);
-            if (!studentExists) {
+            const ifStudentExists = await checkIfStudentExistsWithRollNo(rollNo);
+            if (!ifStudentExists) {
                 return response.status(405).json({
                 "success": false,
                 "message": STUDENT_NOT_FOUND
@@ -42,7 +60,8 @@ export const studentRegistrationController = {
             }
 
             //Password Check
-            if(password !== confirm_password) {
+            const passwordCheck = checkPasswordAndConfirmPassword(password, confirm_password)
+            if(!passwordCheck) {
                 return response.status(401).json({
                     "success": "false",
                     "message": PASSWORD_MISMATCH
@@ -57,15 +76,15 @@ export const studentRegistrationController = {
 
             //Supabase API error
             if(error) {
-                return response.status(400).json({
+                return response.status(error.status).json({
                     "success": "false",
-                    "message": error
+                    "message": error.code
                 });
             }
 
             //Successful Request
             return response.status(200).json({
-                "success": "True",
+                "success": "true",
                 "message": "Registered as student successfully"
             })
 

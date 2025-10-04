@@ -1,6 +1,23 @@
 import supabase from "../../supabase-client.js";
 import { WRONG_CREDENTIALS, WRONG_ROLE } from "../../errorMessages.js";
 
+function rollNumberValidation(rollNo) {
+    if (!Number.isInteger(rollNo) || String(rollNo).length != 12) {
+        return false;
+    }
+
+    return true;
+};
+
+async function isStudentEnrolled(rollNo) {
+    const { data, error } = await supabase.from("students").select("*").eq("student_id", rollNo);
+
+    if (error) {
+        return false;
+    }
+    return true;
+};
+
 export const studentLoginController = {
     studentLogin: async (request, response) => {
         try {
@@ -9,25 +26,35 @@ export const studentLoginController = {
             let password = request.body.password;
             let role = request.body.role;
 
-            // Checking the role of user
-            if (role !== 'student') {
-                return response.status(403).json({ 
+            // Validation of the rollNo
+            if (!rollNumberValidation(rollNo)) {
+                return response.status(403).json({
                     "success": "false",
-                    "message": WRONG_ROLE 
+                    "message": WRONG_CREDENTIALS
                 });
             };
+
+            // rollNo validation is successfull. So, now check whether the student is registered or not
             
+            // Checking the role of user
+            if (role !== 'student') {
+                return response.status(403).json({
+                    "success": "false",
+                    "message": WRONG_ROLE
+                });
+            };
+
             // Login logic
             const email = `${rollNo}@pujyank.com`;
 
-            const { data, error } = await supabase.auth.signInWithPassword({ 
-                email, 
-                password 
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email,
+                password
             });
 
             // Supabase API error
             if (error) {
-                return response.status(400).json({ 
+                return response.status(400).json({
                     "success": "false",
                     "message": WRONG_CREDENTIALS
                 });

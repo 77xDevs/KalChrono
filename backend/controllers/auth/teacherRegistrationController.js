@@ -49,8 +49,8 @@ export const teacherRegistrationController = {
             }
 
             // Check if teacher exists in DB
-            const exists = await checkIfTeacherExists(teacherId);
-            if (!exists) {
+            const ifTeacherExists = await checkIfTeacherExists(teacherId);
+            if (!ifTeacherExists) {
                 return response.status(404).json({
                     success: false,
                     message: TEACHER_NOT_FOUND

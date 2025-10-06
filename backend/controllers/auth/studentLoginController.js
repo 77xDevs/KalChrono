@@ -1,17 +1,17 @@
 import supabase from "../../supabase-client.js";
-import { WRONG_CREDENTIALS, WRONG_ROLE } from "../../errorMessages.js";
+import { STUDENT_NOT_FOUND, STUDENT_NOT_REGISTERED, WRONG_CREDENTIALS, WRONG_ROLE } from "../../errorMessages.js";
 
+// function to validate roll number
 function rollNumberValidation(rollNo) {
     if (!Number.isInteger(rollNo) || String(rollNo).length != 12) {
         return false;
     }
-
     return true;
 };
 
-async function isStudentEnrolled(rollNo) {
+// function to check whether the student exists in the table or not
+async function doesStudentExist(rollNo) {
     const { data, error } = await supabase.from("students").select("*").eq("student_id", rollNo);
-
     if (error) {
         return false;
     }
@@ -35,7 +35,17 @@ export const studentLoginController = {
             };
 
             // rollNo validation is successfull. So, now check whether the student is registered or not
-            
+            if (!doesStudentExist(rollNo)) {
+                return response.status(403).json({
+                    "success": "false",
+                    "message": STUDENT_NOT_FOUND
+                })
+            };
+
+            // Getting email from students table
+            const { data: studentData, error: studentError } = await supabase.from("students").select("email").eq("student_id", rollNo);
+            console.log(studentData);
+
             // Checking the role of user
             if (role !== 'student') {
                 return response.status(403).json({
@@ -45,10 +55,8 @@ export const studentLoginController = {
             };
 
             // Login logic
-            const email = `${rollNo}@pujyank.com`;
-
             const { data, error } = await supabase.auth.signInWithPassword({
-                email,
+                email: studentData[0].email,
                 password
             });
 
@@ -56,7 +64,7 @@ export const studentLoginController = {
             if (error) {
                 return response.status(400).json({
                     "success": "false",
-                    "message": WRONG_CREDENTIALS
+                    "message": STUDENT_NOT_REGISTERED
                 });
             };
 

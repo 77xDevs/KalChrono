@@ -7,3 +7,4 @@ export const WRONG_ROLE = "You are not authorized to view this page (role error)
 export const WRONG_CREDENTIALS = "Your password/rollNo is incorrect"
 
 export const STUDENT_NOT_FOUND = "Student with the entered Roll Number not found, please check and try again"
+export const STUDENT_NOT_REGISTERED = "Student with this Roll number did not registered!!"

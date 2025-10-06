@@ -1,14 +1,6 @@
 import supabase from "../../supabase-client.js";
 import { WRONG_CREDENTIALS_TEACHER, WRONG_ROLE } from "../../errorMessages.js";
 
-function teacherIdValidation(teacherId) {
-    // Assuming teacher ID is numeric and 6 digits long
-    if (!Number.isInteger(teacherId) || String(teacherId).length !== 6) {
-        return false;
-    }
-    return true;
-}
-
 export const teacherLoginController = {
     teacherLogin: async (request, response) => {
         try {
@@ -16,15 +8,6 @@ export const teacherLoginController = {
             let teacherId = request.body.teacherId;
             let password = request.body.password;
             let role = request.body.role;
-
-
-            const validTeacherId = teacherIdValidation(teacherId);
-            if (!validTeacherId) {
-                return response.status(422).json({
-                    success: false,
-                    message: BAD_REQUEST
-                });
-            }
 
             // Checking the role of user
             if (role !== 'teacher') {

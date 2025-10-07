@@ -7,5 +7,3 @@ export const authRouter = express.Router();
 authRouter.post('/studentRegistration', studentRegistrationController.studentRegistration);
 
 authRouter.post('/studentLogin', studentLoginController.studentLogin);
-
-export default authRouter;

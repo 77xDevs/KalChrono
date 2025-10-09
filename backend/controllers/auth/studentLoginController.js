@@ -1,59 +1,62 @@
 import supabase from "../../supabase-client.js";
-import { WRONG_CREDENTIALS_TEACHER, WRONG_ROLE,TEACHER_NOT_FOUND,TEACHER_NOT_REGISTERED} from "../../errorMessages.js";
+import { STUDENT_NOT_FOUND, STUDENT_NOT_REGISTERED, WRONG_CREDENTIALS, WRONG_ROLE } from "../../errorMessages.js";
 
-function teacherIdValidation(teacherId) {
-    if (!Number.isInteger(teacherId) || String(teacherId).length != 6) {
+// function to validate roll number
+function rollNumberValidation(rollNo) {
+    if (!Number.isInteger(rollNo) || String(rollNo).length != 12) {
         return false;
     }
     return true;
 };
-async function doesTeacherExist(teacherId) {
-    const { data, error } = await supabase.from("teachers").select("*").eq("teacher_id", teacherId);
+
+// function to check whether the student exists in the table or not
+async function doesStudentExist(rollNo) {
+    const { data, error } = await supabase.from("students").select("*").eq("student_id", rollNo);
     if (error) {
         return false;
     }
     return true;
 };
-export const teacherLoginController = {
-    teacherLogin: async (request, response) => {
+
+export const studentLoginController = {
+    studentLogin: async (request, response) => {
         try {
             //Variables
-            let teacherId = request.body.teacherId;
+            let rollNo = request.body.rollNo;
             let password = request.body.password;
             let role = request.body.role;
 
-            // Validation of the teacherId
-            if (!teacherIdValidation(teacherId)) {
+            // Validation of the rollNo
+            if (!rollNumberValidation(rollNo)) {
                 return response.status(403).json({
                     "success": "false",
-                    "message": WRONG_CREDENTIALS_TEACHER
+                    "message": WRONG_CREDENTIALS
                 });
             };
 
-             // teacherId validation is successful.Now check whether the teacher is registered or not
-            if (!doesTeacherExist(teacherId)) {
+            // rollNo validation is successfull. So, now check whether the student is registered or not
+            if (!doesStudentExist(rollNo)) {
                 return response.status(403).json({
                     "success": "false",
-                    "message": TEACHER_NOT_FOUND
+                    "message": STUDENT_NOT_FOUND
                 })
             };
-            
 
-             // Getting email from teachers table
-            const { data: teacherData, error: teacherError } = await supabase.from("teachers").select("email").eq("teacher_id", teacherId);
-            console.log(teacherData);
+            // Getting email from students table
+            const { data: studentData, error: studentError } = await supabase.from("students").select("email").eq("student_id", rollNo);
+            console.log(studentData);
 
             // Checking the role of user
-            if (role !== 'teacher') {
-                return response.status(401).json({
+            if (role !== 'student') {
+                return response.status(403).json({
                     "success": "false",
                     "message": WRONG_ROLE
                 });
             };
 
-         // Login logic
+            // Login logic
             const { data, error } = await supabase.auth.signInWithPassword({
-                email: teacherData[0].email,
+                email: studentData[0].email,
                 password
             });
 
@@ -61,7 +64,7 @@ export const teacherLoginController = {
             if (error) {
                 return response.status(400).json({
                     "success": "false",
-                    "message": TEACHER_NOT_REGISTERED
+                    "message": STUDENT_NOT_REGISTERED
                 });
             };
 

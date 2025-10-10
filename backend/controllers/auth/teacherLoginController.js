@@ -1,5 +1,5 @@
 import supabase from "../../supabase-client.js";
-import { WRONG_CREDENTIALS_TEACHER, WRONG_ROLE,TEACHER_NOT_FOUND,TEACHER_NOT_REGISTERED} from "../../errorMessages.js";
+import { WRONG_CREDENTIALS_TEACHER, WRONG_ROLE,TEACHER_NOT_FOUND} from "../../errorMessages.js";
 
 function teacherIdValidation(teacherId) {
     if (!Number.isInteger(teacherId) || String(teacherId).length != 6) {
@@ -37,21 +37,12 @@ export const teacherLoginController = {
                     "message": TEACHER_NOT_FOUND
                 })
             };
-            
 
-             // Getting email from teachers table
+            // Getting email from teachers table
             const { data: teacherData, error: teacherError } = await supabase.from("teachers").select("email").eq("teacher_id", teacherId);
             console.log(teacherData);
 
-            // Checking the role of user
-            if (role !== 'teacher') {
-                return response.status(401).json({
-                    "success": "false",
-                    "message": WRONG_ROLE
-                });
-            };
-
-         // Login logic
+            // Login logic
             const { data, error } = await supabase.auth.signInWithPassword({
                 email: teacherData[0].email,
                 password
@@ -61,7 +52,7 @@ export const teacherLoginController = {
             if (error) {
                 return response.status(400).json({
                     "success": "false",
-                    "message": TEACHER_NOT_REGISTERED
+                    "message": error.message
                 });
             };
 

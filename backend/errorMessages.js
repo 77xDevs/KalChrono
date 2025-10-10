@@ -10,4 +10,3 @@ export const STUDENT_NOT_FOUND = "Student with the entered Roll Number not found
 export const STUDENT_NOT_REGISTERED = "Student with this Roll number did not registered!!"
 export const TEACHER_NOT_FOUND = "Teacher with the entered ID not found, please check and try again"
 export const WRONG_CREDENTIALS_TEACHER = "Your password/teacherId is incorrect"
-export const TEACHER_NOT_REGISTERED="Teacher with this teacherId did not registered!!"

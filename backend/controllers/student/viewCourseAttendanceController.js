@@ -1,16 +1,17 @@
 import supabase from "../../supabase-client.js";
 import { responseObj } from "../../utils/responseJson.js";
 
-export const viewAttendanceController = {
-    viewAttendance: async (request, response) => {
+export const viewCourseAttendanceController = {
+    viewCourseAttendance: async (request, response) => {
         try {
             //Variables
-            const {rollNo}= request.query;
-            
+            const {rollNo, subjectName}= request.query;
+
             //Retrieving Data from view
             const {data: attendance_data, error: attendance_error} = await supabase.from("attendance_summary")
                                                                                 .select("*")
-                                                                                .eq("student_id", rollNo);
+                                                                                .eq("student_id", rollNo)
+                                                                                .eq("subject_name", subjectName);
 
             //Error while retrieving
             if(attendance_error) {

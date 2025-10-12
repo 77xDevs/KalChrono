@@ -1,5 +1,5 @@
 import supabase from "../../supabase-client.js";
-import { STUDENT_NOT_FOUND, WRONG_CREDENTIALS } from "../../errorMessages.js";
+import { STUDENT_NOT_FOUND, WRONG_CREDENTIALS } from "../../utils/errorMessages.js";
 import { responseObj } from "../../utils/responseJson.js";
 
 // function to validate roll number

@@ -1,5 +1,5 @@
 import supabase  from "../../supabase-client.js";
-import { BAD_REQUEST, PASSWORD_MISMATCH, STUDENT_NOT_FOUND, STUDENT_NOT_REGISTERED } from "../../errorMessages.js";
+import { BAD_REQUEST, PASSWORD_MISMATCH, STUDENT_NOT_FOUND, STUDENT_NOT_REGISTERED } from "../../utils/errorMessages.js";
 import { responseObj } from "../../utils/responseJson.js";
 
 //Checking if the roll number is of correct format

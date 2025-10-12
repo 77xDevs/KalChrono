@@ -45,7 +45,7 @@ export const studentRegistrationController = {
             //Valid roll number check
             const validRollNo = rollNumberValidation(rollNo);
             if(!validRollNo) {
-                return response.status(422).json({
+                return response.status(400).json({
                     "success": "false",
                     "message": BAD_REQUEST
                 });

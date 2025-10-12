@@ -1,5 +1,5 @@
 import supabase  from "../../supabase-client.js";
-import { BAD_REQUEST, PASSWORD_MISMATCH, STUDENT_NOT_FOUND } from "../../errorMessages.js";
+import { BAD_REQUEST, PASSWORD_MISMATCH, STUDENT_NOT_FOUND, STUDENT_NOT_REGISTERED } from "../../errorMessages.js";
 import { responseObj } from "../../utils/responseJson.js";
 
 //Checking if the roll number is of correct format
@@ -45,10 +45,7 @@ export const studentRegistrationController = {
             //Valid roll number check
             const validRollNo = rollNumberValidation(rollNo);
             if(!validRollNo) {
-                return response.status(400).json({
-                    "success": "false",
-                    "message": BAD_REQUEST
-                });
+                return responseObj.responseJson(response, 400, "false", STUDENT_NOT_REGISTERED);
             }
 
             //Student Check

@@ -44,7 +44,7 @@ export const studentRegistrationController = {
             //Valid roll number check
             const validRollNo = rollNumberValidation(rollNo);
             if(!validRollNo) {
-                return response.status(422).json({
+                return response.status(400).json({
                     "success": "false",
                     "message": BAD_REQUEST
                 });
@@ -53,7 +53,7 @@ export const studentRegistrationController = {
             //Student Check
             const ifStudentExists = await checkIfStudentExistsWithRollNo(rollNo);
             if (!ifStudentExists) {
-                return response.status(405).json({
+                return response.status(404).json({
                 "success": false,
                 "message": STUDENT_NOT_FOUND
                 });
@@ -62,7 +62,7 @@ export const studentRegistrationController = {
             //Password Check
             const passwordCheck = checkPasswordAndConfirmPassword(password, confirm_password)
             if(!passwordCheck) {
-                return response.status(401).json({
+                return response.status(400).json({
                     "success": "false",
                     "message": PASSWORD_MISMATCH
                 });
@@ -83,7 +83,7 @@ export const studentRegistrationController = {
             }
 
             //Successful Request
-            return response.status(200).json({
+            return response.status(201).json({
                 "success": "true",
                 "message": "Registered as student successfully"
             })

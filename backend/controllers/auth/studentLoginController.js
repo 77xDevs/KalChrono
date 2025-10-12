@@ -28,7 +28,7 @@ export const studentLoginController = {
 
             // Validation of the rollNo
             if (!rollNumberValidation(rollNo)) {
-                return response.status(403).json({
+                return response.status(400).json({
                     "success": "false",
                     "message": WRONG_CREDENTIALS
                 });
@@ -36,7 +36,7 @@ export const studentLoginController = {
 
             // rollNo validation is successfull. So, now check whether the student is registered or not
             if (!doesStudentExist(rollNo)) {
-                return response.status(403).json({
+                return response.status(404).json({
                     "success": "false",
                     "message": STUDENT_NOT_FOUND
                 })
@@ -69,7 +69,7 @@ export const studentLoginController = {
             };
 
             // Successful login
-            return response.status(200).json({
+            return response.status(201).json({
                 "statusCode": 200,
                 "message": "Login successfully"
             });

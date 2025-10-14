@@ -42,7 +42,7 @@ export const teacherRegistrationController = {
             // Validate teacher ID format
             const validTeacherId = teacherIdValidation(teacherId);
             if (!validTeacherId) {
-                return response.status(422).json({
+                return response.status(400).json({
                     success: false,
                     message: BAD_REQUEST
                 });
@@ -81,7 +81,7 @@ export const teacherRegistrationController = {
             }
 
             // Success response
-            return response.status(200).json({
+            return response.status(201).json({
                 success: true,
                 message: "Registered as teacher successfully"
             });

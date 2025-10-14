@@ -1,5 +1,6 @@
 import supabase  from "../../supabase-client.js";
-import { BAD_REQUEST, PASSWORD_MISMATCH, STUDENT_NOT_FOUND } from "../../errorMessages.js";
+import { BAD_REQUEST, PASSWORD_MISMATCH, STUDENT_NOT_FOUND, STUDENT_NOT_REGISTERED } from "../../utils/errorMessages.js";
+import { responseObj } from "../../utils/responseJson.js";
 
 //Checking if the roll number is of correct format
 function rollNumberValidation(rollNo) {
@@ -44,28 +45,19 @@ export const studentRegistrationController = {
             //Valid roll number check
             const validRollNo = rollNumberValidation(rollNo);
             if(!validRollNo) {
-                return response.status(422).json({
-                    "success": "false",
-                    "message": BAD_REQUEST
-                });
+                return responseObj.responseJson(response, 400, "false", STUDENT_NOT_REGISTERED);
             }
 
             //Student Check
-            const ifStudentExists = await checkIfStudentExistsWithRollNo(rollNo);
-            if (!ifStudentExists) {
-                return response.status(405).json({
-                "success": false,
-                "message": STUDENT_NOT_FOUND
-                });
+            const isStudent = await checkIfStudentExistsWithRollNo(rollNo);
+            if (!isStudent) {
+                return responseObj.responseJson(response, 401, "false", STUDENT_NOT_FOUND);
             }
 
             //Password Check
             const passwordCheck = checkPasswordAndConfirmPassword(password, confirm_password)
             if(!passwordCheck) {
-                return response.status(401).json({
-                    "success": "false",
-                    "message": PASSWORD_MISMATCH
-                });
+                return responseObj.responseJson(response, 401, "false", PASSWORD_MISMATCH);
             }
 
             //Registration logic
@@ -76,25 +68,16 @@ export const studentRegistrationController = {
 
             //Supabase API error
             if(error) {
-                return response.status(error.status).json({
-                    "success": "false",
-                    "message": error.code
-                });
+                return responseObj.responseJson(response, 401, "false", error.code);
             }
 
             //Successful Request
-            return response.status(200).json({
-                "success": "true",
-                "message": "Registered as student successfully"
-            })
+            return responseObj.responseJson(response, 200,  "true", "Registration Successful");
 
         } catch(error) {
 
             //Internal server Error
-            return response.status(500).json({
-                "success": "false",
-                "message": error.message
-            });
+            return responseObj.responseJson(response, 500, "false", error.message);
         }
     }
 }

@@ -24,7 +24,7 @@ export const teacherLoginController = {
 
             // Validation of the teacherId
             if (!teacherIdValidation(teacherId)) {
-                return response.status(403).json({
+                return response.status(400).json({
                     "success": "false",
                     "message": WRONG_CREDENTIALS_TEACHER
                 });
@@ -32,7 +32,7 @@ export const teacherLoginController = {
 
              // teacherId validation is successful.Now check whether the teacher is registered or not
             if (!doesTeacherExist(teacherId)) {
-                return response.status(403).json({
+                return response.status(404).json({
                     "success": "false",
                     "message": TEACHER_NOT_FOUND
                 })
@@ -57,7 +57,7 @@ export const teacherLoginController = {
             };
 
             // Successful login
-            return response.status(200).json({
+            return response.status(201).json({
                 "statusCode": 200,
                 "message": "Login successfully"
             });

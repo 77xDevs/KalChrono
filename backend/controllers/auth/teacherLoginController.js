@@ -1,5 +1,5 @@
 import supabase from "../../supabase-client.js";
-import { WRONG_CREDENTIALS_TEACHER, WRONG_ROLE,TEACHER_NOT_FOUND} from "../../errorMessages.js";
+import { WRONG_CREDENTIALS_TEACHER, WRONG_ROLE,TEACHER_NOT_FOUND} from "../../utils/errorMessages.js";
 
 function teacherIdValidation(teacherId) {
     if (!Number.isInteger(teacherId) || String(teacherId).length != 6) {

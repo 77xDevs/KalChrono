@@ -1,5 +1,5 @@
 import supabase from "../../supabase-client.js";
-import { BAD_REQUEST, PASSWORD_MISMATCH, TEACHER_NOT_FOUND } from "../../errorMessages.js";
+import { BAD_REQUEST, PASSWORD_MISMATCH, TEACHER_NOT_FOUND } from "../../utils/errorMessages.js";
 
 // Function to validate teacher ID format
 function teacherIdValidation(teacherId) {

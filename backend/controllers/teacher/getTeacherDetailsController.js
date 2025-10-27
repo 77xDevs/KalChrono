@@ -8,19 +8,19 @@ export const getTeacherDetailsController = {
             const { teacherId } = request.query;
 
             // Retrieving Teacher enrolled details
-            const { data: teaching_data, error: teaching_error } = await supabase.from("course")
+            const { data: teachingData, error: teachingError } = await supabase.from("course")
                 .select("*")
                 .eq("teacher_id", teacherId);
 
             // Error while retrieving
-            if (teaching_error) {
-                console.log(teaching_error);
-                return responseObj.responseJson(response, 401, "false", teaching_error.status);
+            if (teachingError) {
+                console.log(teachingError);
+                return responseObj.responseJson(response, 401, "false", teachingError.status);
             };
 
             return response.status(200).json({
                 "success": "true",
-                "data": teaching_data
+                "data": teachingData
             });
 
         } catch (error) {

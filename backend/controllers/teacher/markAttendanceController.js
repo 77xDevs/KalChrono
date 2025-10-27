@@ -5,7 +5,7 @@ export const markAttendanceController = {
     markAttendance: async (request, response) => {
         try {
             // Variables
-            const { students, courseId } = request.body;
+            const { students, courseId, currentHours } = request.body;
 
             // Checking if there are any students marked to present or not
             if (!students || students.length === 0) {
@@ -46,7 +46,7 @@ export const markAttendanceController = {
                     const record = attendanceData.find(
                         (row) => row.enrollment_id === enroll.enrollment_id
                     );
-                    const newHours = (record?.no_of_hours || 0) + 1;
+                    const newHours = (record?.no_of_hours || 0) + currentHours;
                     const updates = {
                         enrollment_id: enroll.enrollment_id,
                         student_id: enroll.student_id,

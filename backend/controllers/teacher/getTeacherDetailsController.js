@@ -18,6 +18,11 @@ export const getTeacherDetailsController = {
                 return responseObj.responseJson(response, 401, "false", teachingError.status);
             };
 
+            if(!teachingData || teachingData.length === 0) {
+                return responseObj.responseJson(response, 404, "false", "No teaching data found for the given teacher ID");
+            };
+
+            // Successful retrieval
             return response.status(200).json({
                 "success": "true",
                 "data": teachingData

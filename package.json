@@ -24,5 +24,6 @@
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "supabase": "^2.47.2"
-  }
+  },
+  "keywords": []
 }

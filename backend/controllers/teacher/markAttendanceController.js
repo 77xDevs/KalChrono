@@ -46,15 +46,11 @@ export const markAttendanceController = {
                     const record = attendanceData.find(
                         (row) => row.enrollment_id === enroll.enrollment_id
                     );
-                    const newHours = (record?.no_of_hours || 0) + currentHours;
                     const updates = {
                         enrollment_id: enroll.enrollment_id,
                         student_id: enroll.student_id,
-                        no_of_hours: newHours
-                    }
-
-                    if(record && record.attendance_id){
-                        updates.attendance_id = record.attendance_id
+                        no_of_hours: currentHours,
+                        date: new Date().toISOString().split('T')[0]
                     }
                     return updates
                 });
@@ -62,9 +58,7 @@ export const markAttendanceController = {
             // Updating the attendance
             const { data, error } = await supabase
             .from("attendance")
-            .upsert(updateAttendance, {
-                onConflict: 'attendance_id'
-            })
+            .insert(updateAttendance)
 
             if(error){
                 console.log(error);
